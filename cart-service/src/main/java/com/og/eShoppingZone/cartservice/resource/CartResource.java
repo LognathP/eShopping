@@ -50,11 +50,11 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	}
 	
 	@GetMapping("/getcartbyid")
-	public ResponseEntity<Optional<Cart>> getCartById(@RequestParam int cartId)
+	public ResponseEntity<Cart> getCartById(@RequestParam int cartId)
 	{
 		logger.info(this.getClass(),"GET CART BY ID API CALL STARTED AT "+dateFormat.format(new Date()));
 		logger.debug(this.getClass(),"REQUEST ENTITY ID "+cartId);
-		return new ResponseEntity<Optional<Cart>>(cartService.getCartById(cartId),HttpStatus.OK);
+		return new ResponseEntity<Cart>(cartService.getCartById(cartId),HttpStatus.OK);
 	}
 	
 	@GetMapping("/getcarttotal")

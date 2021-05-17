@@ -1,14 +1,13 @@
 package com.og.eShoppingZone.cartservice.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.og.eShoppingZone.cartservice.dao.CartServiceDao;
 import com.og.eShoppingZone.cartservice.entity.Cart;
 import com.og.eShoppingZone.cartservice.logger.CommonLogger;
-import com.og.eShoppingZone.cartservice.repository.CartRepository;
 
 
 @Component
@@ -18,14 +17,14 @@ public class CartServiceImpl implements CartService {
 	CommonLogger logger;
 	
 	@Autowired
-	CartRepository cartRepository;
-	
-	
-	
+	CartServiceDao cartDao;
+
+		
 	@Override
 	public Cart addCart(Cart cart) {
 		try {
-			cartRepository.save(cart);
+			cartDao.addCart(cart);
+					
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON addCart "+e.getMessage());
 		}
@@ -35,7 +34,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public List<Cart> getAllcarts() {
 		try {
-			return cartRepository.findAll();
+			return cartDao.getAllcarts();
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON getAllcarts "+e.getMessage());
 		}
@@ -43,9 +42,9 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public Optional<Cart> getCartById(int cartId) {
+	public Cart getCartById(int cartId) {
 		try {
-			return cartRepository.findById((long) cartId);
+			return cartDao.getCartById(cartId);
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON getCartById "+e.getMessage());
 		}
@@ -55,7 +54,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public Double getCartTotal(int cartId) {
 		try {
-			return cartRepository.findById((long) cartId).get().getTotalPrice();
+			return cartDao.getCartTotal(cartId);
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON getCartTotal "+e.getMessage());
 		}
@@ -67,14 +66,14 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public Cart updateCart(Cart cart) {
 		try {
-			cartRepository.save(cart);
-			return cartRepository.findById(cart.getCartId()).get();
+			return cartDao.updateCart(cart);
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON updateCart "+e.getMessage());
 		}
 		return null;
 		
 	}
+
 
 	
 		

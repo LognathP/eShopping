@@ -1,4 +1,4 @@
-package com.og.eShoppingZone.cartservice.service;
+package com.og.eShoppingZone.cartservice.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import com.og.eShoppingZone.cartservice.entity.Cart;
 
 
 @Service
-public interface CartService {
+public interface CartServiceDao {
 
 	Cart addCart(Cart cart);
 
