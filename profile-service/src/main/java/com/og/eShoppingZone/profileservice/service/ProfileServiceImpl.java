@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.og.eShoppingZone.profileservice.entity.Profile;
 import com.og.eShoppingZone.profileservice.entity.Role;
+import com.og.eShoppingZone.profileservice.entity.Wallet;
 import com.og.eShoppingZone.profileservice.logger.CommonLogger;
 import com.og.eShoppingZone.profileservice.repository.ProfileRepository;
+import com.og.eShoppingZone.profileservice.repository.WalletRepository;
 
 
 @Component
@@ -21,6 +23,9 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	ProfileRepository profileRepository;
 	
+	@Autowired
+	WalletRepository walletRepository;
+	
 	
 	
 	@Override
@@ -29,6 +34,10 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			profile.setRole(Role.Customer);
 			profileRepository.save(profile);
+			Wallet w = new Wallet();
+			w.setId(profile.getProfileId());
+			w.setBalance(0);
+			walletRepository.save(w);
 			status = true;
 		} catch (Exception e) {
 			logger.error(this.getClass(),"ERROR OCCURED ON addCustomerProfile "+e.getMessage());

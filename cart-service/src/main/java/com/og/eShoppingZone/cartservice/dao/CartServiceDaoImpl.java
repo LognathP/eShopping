@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.og.eShoppingZone.cartservice.constant.QueryConstants;
+import com.og.eShoppingZone.cartservice.constant.CartServiceQueryConstants;
 import com.og.eShoppingZone.cartservice.entity.Cart;
 import com.og.eShoppingZone.cartservice.entity.Item;
 import com.og.eShoppingZone.cartservice.logger.CommonLogger;
@@ -33,7 +33,7 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		int id = 0;
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.INSERT_CART,new String[] {"id"});
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.INSERT_CART,new String[] {"id"});
 			preStmt.setDouble(1, cart.getTotalPrice());
 			int rs = preStmt.executeUpdate();
 			if(rs > 0)
@@ -71,8 +71,8 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		Connection connection = null;
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.INSERT_ITEM);
-			preStmt.setString(1, item.getProductName());
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.INSERT_ITEM);
+			preStmt.setInt(1, item.getProductId());
 			preStmt.setDouble(2, item.getPrice());
 			preStmt.setInt(3, item.getQuantity());
 			preStmt.setInt(4, item.getCart_id());
@@ -105,20 +105,20 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.GET_ALL_CART);
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.GET_ALL_CART);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				Cart cart = new Cart();
 				cart.setId(res.getInt(1));
 				cart.setTotalPrice(res.getDouble(2));
-				preStmt1 = connection.prepareStatement(QueryConstants.GET_ITEM);
+				preStmt1 = connection.prepareStatement(CartServiceQueryConstants.GET_ITEM);
 				preStmt1.setInt(1, cart.getId());
 				res1 = preStmt1.executeQuery();
 				List<Item> itemList = new ArrayList<>();
 				while(res1.next())
 				{
 					Item item = new Item();
-					item.setProductName(res1.getString("product_name"));
+					item.setProductId(res1.getInt("product_id"));
 					item.setPrice(res1.getDouble("price"));
 					item.setQuantity(res1.getInt("quantity"));
 					item.setId(res1.getInt("id"));
@@ -159,19 +159,19 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		List<Item> itemList = new ArrayList<>();
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.GET_CART_BYID);
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.GET_CART_BYID);
 			preStmt.setInt(1, cartId);
 			res = preStmt.executeQuery();
 			while(res.next()) {
 				cart.setId(res.getInt(1));
 				cart.setTotalPrice(res.getDouble(2));
-				preStmt1 = connection.prepareStatement(QueryConstants.GET_ITEM);
+				preStmt1 = connection.prepareStatement(CartServiceQueryConstants.GET_ITEM);
 				preStmt1.setInt(1, cart.getId());
 				res1 = preStmt1.executeQuery();
 				while(res1.next())
 				{
 					Item item = new Item();
-					item.setProductName(res1.getString("product_name"));
+					item.setProductId(res1.getInt("product_id"));
 					item.setPrice(res1.getDouble("price"));
 					item.setQuantity(res1.getInt("quantity"));
 					item.setId(res1.getInt("id"));
@@ -208,7 +208,7 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		double total_price = 0;
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.GET_CART_BYID);
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.GET_CART_BYID);
 			preStmt.setInt(1, cartId);
 			res = preStmt.executeQuery();
 			while(res.next()) {
@@ -240,14 +240,14 @@ public class CartServiceDaoImpl implements CartServiceDao {
 		Connection connection = null;
 		try {
 			connection = jdbcTemp.getDataSource().getConnection();
-			preStmt = connection.prepareStatement(QueryConstants.UPDATE_CART);
+			preStmt = connection.prepareStatement(CartServiceQueryConstants.UPDATE_CART);
 			preStmt.setDouble(1, cart.getTotalPrice());
 			preStmt.setInt(2, cart.getId());
 			preStmt.executeUpdate();
 			for (Item item : cart.getItem()) {
 				connection = jdbcTemp.getDataSource().getConnection();
-				preStmt1 = connection.prepareStatement(QueryConstants.UPDATE_ITEM);
-				preStmt1.setString(1, item.getProductName());
+				preStmt1 = connection.prepareStatement(CartServiceQueryConstants.UPDATE_ITEM);
+				preStmt1.setInt(1, item.getProductId());
 				preStmt1.setDouble(2, item.getPrice());
 				preStmt1.setInt(3, item.getQuantity());
 				preStmt1.setInt(4, item.getId());
