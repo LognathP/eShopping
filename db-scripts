@@ -1,3 +1,58 @@
+-- address definition
+
+CREATE TABLE `address` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `customerId` int(11) NOT NULL,
+  `fullName` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobileNumber` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `flatNumber` int(11) DEFAULT NULL,
+  `city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pinCode` int(11) DEFAULT NULL,
+  `state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- cart definition
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `total_price` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- cart definition
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `total_price` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- item definition
+
+CREATE TABLE `item` (
+  `product_id` decimal(10,0) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cart_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `item_FK` (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- `order` definition
+
+CREATE TABLE `order` (
+  `orderId` int(11) NOT NULL AUTO_INCREMENT,
+  `orderDate` date NOT NULL,
+  `customerId` int(11) NOT NULL,
+  `amountPaid` double DEFAULT NULL,
+  `modeOfPayment` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `orderStatus` int(11) DEFAULT NULL,
+  `cartId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`orderId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- product definition
 
 CREATE TABLE `product` (
@@ -26,24 +81,11 @@ CREATE TABLE `profile` (
   PRIMARY KEY (`profile_id`),
   UNIQUE KEY `emailid` (`email_id`),
   UNIQUE KEY `mobilenumber` (`mobile_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- cart definition
-
-CREATE TABLE `cart` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `total_price` double DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- item definition
-
-CREATE TABLE `item` (
-  `product_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cart_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `item_FK` (`cart_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- wallet definition
+
+CREATE TABLE `wallet` (
+  `id` int(11) DEFAULT NULL,
+  `balance` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
