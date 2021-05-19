@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	ProductService productService;
 	
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@PostMapping("/addproduct")
 	public boolean addProduct(@RequestBody Product product)
 	{
@@ -42,6 +44,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return productService.addProduct(product);	
 	}
 	
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@GetMapping("/getallproduct")
 	public ResponseEntity<List<Product>> getAllProducts()
 	{
@@ -49,6 +52,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Product>>(productService.getAllProducts(),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@GetMapping("/getproductbyid")
 	public ResponseEntity<Optional<Product>> getProductById(@RequestParam int productId)
 	{
@@ -57,6 +61,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Optional<Product>>(productService.getProductById(productId),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@GetMapping("/getproductbyname")
 	public ResponseEntity<Optional<Product>> getProductByName(@RequestParam String productName)
 	{
@@ -73,6 +78,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Product>>(productService.getProductByCategory(categoryName),HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@GetMapping("/getproductbytype")
 	public ResponseEntity<List<Product>> getProductByType(@RequestParam String productType)
 	{
@@ -81,6 +87,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Product>>(productService.getProductByType(productType),HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@PutMapping("/updateproduct")
 	public ResponseEntity<Product> updateProduct(@RequestBody Product product)
 	{
@@ -89,6 +96,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Product>(productService.updateProduct(product),HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('MERCHANT')")
 	@DeleteMapping("/deleteproduct")
 	public boolean deleteProduct(@RequestParam int productId)
 	{

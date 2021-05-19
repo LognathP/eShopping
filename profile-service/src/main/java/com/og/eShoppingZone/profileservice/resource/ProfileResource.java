@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.og.eShoppingZone.profileservice.auth.JwtTokenUtil;
 import com.og.eShoppingZone.profileservice.entity.Profile;
 import com.og.eShoppingZone.profileservice.logger.CommonLogger;
 import com.og.eShoppingZone.profileservice.service.ProfileService;
+import com.og.eShoppingZone.profileservice.util.DESEncryptor;
 
 
 @RestController
@@ -30,9 +33,30 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	
 	@Autowired
 	CommonLogger logger;
+	
+	@Autowired
+	JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	ProfileService profileService;
+	
+	@Autowired
+	private Environment env;
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestParam String email,@RequestParam String password) throws Exception
+	{
+		password = DESEncryptor.encrypt(password, env.getProperty("password.key"));
+		String token = null;
+		Profile profile = profileService.authenticateLogin(email,password);
+		if(profile != null)
+		{
+			token = jwtTokenUtil.generateToken(profile);
+		}
+		else
+		{ throw new Exception("User Not found");}
+		return new ResponseEntity<String>(token,HttpStatus.OK);
+	}
 	
 	@PostMapping("/addcustomer")
 	public boolean addCustomerProfile(@RequestBody Profile profile)

@@ -18,4 +18,10 @@ public interface ProfileRepository extends JpaRepository<Profile,Long>{
 	
 	@Query("SELECT p FROM Profile p where p.fullName = :name")
 	List<Profile> findByProfileByName(@Param("name") String name);
+	
+	@Query("SELECT p FROM Profile p where p.emailId = :email and p.password = :pass")
+	Profile authenticateUser(@Param("email") String email,@Param("pass") String password);
+	
+	@Query("SELECT p FROM Profile p where p.emailId = :email")
+	Profile findByProfileByEmail(@Param("email") String email);
 }

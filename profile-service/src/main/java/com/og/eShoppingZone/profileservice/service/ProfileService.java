@@ -29,6 +29,11 @@ public interface ProfileService {
 	Profile updateProfile(Profile profile);
 
 	boolean deleteProfile(int profileId);
+
+	Profile authenticateLogin(String email, String password);
+
+	Profile getProfileByEmail(String email);
+	
 	
 	
 	

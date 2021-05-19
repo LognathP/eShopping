@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	CartService cartService;
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/addcart")
 	public ResponseEntity<Cart> addCart(@RequestBody Cart cart)
 	{
@@ -42,6 +44,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Cart>(cartService.addCart(cart),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@GetMapping("/getallcart")
 	public ResponseEntity<List<Cart>> getAllcarts()
 	{
@@ -57,6 +60,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Cart>(cartService.getCartById(cartId),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@GetMapping("/getcarttotal")
 	public ResponseEntity<Double> getCartTotal(@RequestParam int cartId)
 	{
@@ -65,7 +69,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Double>(cartService.getCartTotal(cartId),HttpStatus.OK);
 	}
 	
-
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PutMapping("/updatecart")
 	public ResponseEntity<Cart> updateCart(@RequestBody Cart cart)
 	{

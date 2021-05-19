@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,6 +38,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	OrderService orderService;
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER','MERCHANT')")
 	@GetMapping("/getallorders")
 	public ResponseEntity<List<Order>> getAllOrders()
 	{
@@ -44,6 +46,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Order>>(orderService.getAllOrders(),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER','MERCHANT')")
 	@GetMapping("/getalladdress")
 	public ResponseEntity<List<Address>> getAllAddress()
 	{
@@ -51,6 +54,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Address>>(orderService.getAllAddress(),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER','MERCHANT')")
 	@GetMapping("/getallorderbyid")
 	public ResponseEntity<List<Order>> getOrderbyCustomerId(@RequestParam int customerId)
 	{
@@ -58,6 +62,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Order>>(orderService.getOrderbyCustomerId(customerId),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER','MERCHANT')")
 	@GetMapping("/getalladdressbyid")
 	public ResponseEntity<List<Address>> getAddressbyCustomerId(@RequestParam int customerId)
 	{
@@ -65,6 +70,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Address>>(orderService.getAddressbyCustomerId(customerId),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/placeorder")
 	public boolean placeOrder(@RequestBody Order order)
 	{
@@ -72,7 +78,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		logger.debug(this.getClass(),"REQUEST ENTITY NAME "+order.toString());
 		return orderService.placeOrder(order);
 	}
-	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/storeaddress")
 	public boolean storeAddress(@RequestBody Address address)
 	{
@@ -80,7 +86,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		logger.debug(this.getClass(),"REQUEST ENTITY NAME "+address.toString());
 		return orderService.storeAddress(address);
 	}
-	
+	@PreAuthorize("hasAnyRole('CUSTOMER','MERCHANT')")
 	@PostMapping("/changeorderstatus")
 	public boolean changeOrderStatus(@RequestParam int orderId,@RequestParam int orderStatus)
 	{

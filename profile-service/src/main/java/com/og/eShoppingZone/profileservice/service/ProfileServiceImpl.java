@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.og.eShoppingZone.profileservice.entity.Profile;
@@ -12,6 +13,7 @@ import com.og.eShoppingZone.profileservice.entity.Wallet;
 import com.og.eShoppingZone.profileservice.logger.CommonLogger;
 import com.og.eShoppingZone.profileservice.repository.ProfileRepository;
 import com.og.eShoppingZone.profileservice.repository.WalletRepository;
+import com.og.eShoppingZone.profileservice.util.DESEncryptor;
 
 
 @Component
@@ -26,6 +28,8 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	WalletRepository walletRepository;
 	
+	@Autowired
+	private Environment env;
 	
 	
 	@Override
@@ -33,6 +37,7 @@ public class ProfileServiceImpl implements ProfileService {
 		boolean status = false;
 		try {
 			profile.setRole(Role.Customer);
+			profile.setPassword(DESEncryptor.encrypt(profile.getPassword(), env.getProperty("password.key")));
 			profileRepository.save(profile);
 			Wallet w = new Wallet();
 			w.setId(profile.getProfileId());
@@ -49,6 +54,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public boolean addMerchantProfile(Profile profile) {
 		boolean status = false;
 		try {
+			profile.setPassword(DESEncryptor.encrypt(profile.getPassword(), env.getProperty("password.key")));
 			profile.setRole(Role.Merchant);
 			profileRepository.save(profile);
 			status = true;
@@ -62,6 +68,7 @@ public class ProfileServiceImpl implements ProfileService {
 	public boolean addDeliveryAgentProfile(Profile profile) {
 		boolean status = false;
 		try {
+			profile.setPassword(DESEncryptor.encrypt(profile.getPassword(), env.getProperty("password.key")));
 			profile.setRole(Role.DeliveryAgent);
 			profileRepository.save(profile);
 			status = true;
@@ -116,6 +123,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public Profile updateProfile(Profile profile) {
 		try {
+			profile.setPassword(DESEncryptor.encrypt(profile.getPassword(), env.getProperty("password.key")));
 			profileRepository.save(profile);
 			return profileRepository.findById(profile.getProfileId()).get();
 		} catch (Exception e) {
@@ -136,6 +144,26 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 		return status;
 				
+	}
+
+	@Override
+	public Profile authenticateLogin(String email, String password) {
+		try {
+			return profileRepository.authenticateUser(email, password);
+		} catch (Exception e) {
+			logger.error(this.getClass(),"ERROR OCCURED ON authenticateLogin "+e.getMessage());
+		}
+		return null;
+	}
+	
+	@Override
+	public Profile getProfileByEmail(String email) {
+		try {
+			return profileRepository.findByProfileByEmail(email);
+		} catch (Exception e) {
+			logger.error(this.getClass(),"ERROR OCCURED ON getProfileByEmail "+e.getMessage());
+		}
+		return null;
 	}
 
 	

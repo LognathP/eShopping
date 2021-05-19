@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 	@Autowired
 	WalletService walletService;
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/getbalance")
 	public double getBalance(@RequestParam int walletId)
 	{
@@ -42,6 +44,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return walletService.getBalance(walletId);	
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/addmoney")
 	public boolean addMoney(@RequestBody Wallet wallet)
 	{
@@ -50,6 +53,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return walletService.addMoney(wallet);	
 	}
 	
+	@PreAuthorize("hasAnyRole('CUSTOMER')")
 	@PostMapping("/updatewallet")
 	public boolean updateWallet(@RequestBody Wallet wallet)
 	{
