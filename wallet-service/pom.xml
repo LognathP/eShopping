@@ -74,11 +74,11 @@
     <artifactId>validation-api</artifactId>
     </dependency>
 		<!-- https://mvnrepository.com/artifact/com.netflix.eureka/eureka-client -->
+
 <dependency>
-    <groupId>com.netflix.eureka</groupId>
-    <artifactId>eureka-client</artifactId>
-    <version>1.10.13</version>
-    <scope>runtime</scope>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-eureka</artifactId>
+    <version>1.4.7.RELEASE</version>
 </dependency>
 		
 		<dependency>
@@ -93,18 +93,18 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
 <dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>2020.0.2</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-dependencies</artifactId>
+                    <version>Greenwich.RELEASE</version>
+                    <type>pom</type>
+                    <scope>import</scope>
+                </dependency>
+            </dependencies>
+        </dependencyManagement>
+
 	<build>
 		<plugins>
 			<plugin>

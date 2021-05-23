@@ -38,6 +38,7 @@ protected void configure(HttpSecurity httpSecurity) throws Exception {
 httpSecurity.csrf().disable()
 // dont authenticate this particular request
 .authorizeRequests().antMatchers("/api/v1/profile/login").permitAll().
+antMatchers("/swagger-ui.html").permitAll().
 // all other requests need to be authenticated
 //.antMatchers("/api/v1/profile").hasAnyRole("MERCHANT","CUSTOMER").
 anyRequest().authenticated().and().
