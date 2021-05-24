@@ -44,7 +44,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return productService.addProduct(product);	
 	}
 	
-	@PreAuthorize("hasAnyRole('MERCHANT')")
+	@PreAuthorize("hasAnyRole('MERCHANT','CUSTOMER')")
 	@GetMapping("/getallproduct")
 	public ResponseEntity<List<Product>> getAllProducts()
 	{
@@ -52,7 +52,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Product>>(productService.getAllProducts(),HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasAnyRole('MERCHANT')")
+	@PreAuthorize("hasAnyRole('MERCHANT','CUSTOMER')")
 	@GetMapping("/getproductbyid")
 	public ResponseEntity<Optional<Product>> getProductById(@RequestParam int productId)
 	{
@@ -61,7 +61,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<Optional<Product>>(productService.getProductById(productId),HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasAnyRole('MERCHANT')")
+	@PreAuthorize("hasAnyRole('MERCHANT','CUSTOMER')")
 	@GetMapping("/getproductbyname")
 	public ResponseEntity<Optional<Product>> getProductByName(@RequestParam String productName)
 	{
@@ -69,7 +69,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		logger.debug(this.getClass(),"REQUEST ENTITY NAME "+productName);
 		return new ResponseEntity<Optional<Product>>(productService.getProductByName(productName),HttpStatus.OK);
 	}
-	
+	@PreAuthorize("hasAnyRole('MERCHANT','CUSTOMER')")
 	@GetMapping("/getproductbycategory")
 	public ResponseEntity<List<Product>> getProductByCategory(@RequestParam String categoryName)
 	{
@@ -78,7 +78,7 @@ private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:s
 		return new ResponseEntity<List<Product>>(productService.getProductByCategory(categoryName),HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAnyRole('MERCHANT')")
+	@PreAuthorize("hasAnyRole('MERCHANT','CUSTOMER')")
 	@GetMapping("/getproductbytype")
 	public ResponseEntity<List<Product>> getProductByType(@RequestParam String productType)
 	{

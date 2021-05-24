@@ -7,10 +7,10 @@
         </encoder>
     </appender>
     
-    <!-- <property name="LOG_PATH" value="/hyperapps" /> -->
+   <property name="LOG_PATH" value="C://applogs" /> 
    
   <appender name="INFOAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-   <!--  <file>${LOG_PATH}/infolog.log</file> -->
+    <file>${LOG_PATH}/cart/infolog.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
     </encoder>
@@ -28,7 +28,7 @@
 </appender>
 
  <appender name="DEBUGAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!-- <file>${LOG_PATH}/debuglog.log</file> -->
+    <file>${LOG_PATH}/cart/debuglog.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
     </encoder>
@@ -46,7 +46,7 @@
 </appender>
 
 <appender name="ERRORAPPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-   <!--  <file>${LOG_PATH}/errorlog.log</file> -->
+    <file>${LOG_PATH}/cart/errorlog.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
         <Pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</Pattern>
     </encoder>
@@ -63,7 +63,7 @@
     </rollingPolicy> -->
 </appender>
    
-     	<logger name="com.raos" additivity="false" level="DEBUG">
+     	<logger name="com.og.eShoppingZone.cartservice" additivity="false" level="DEBUG">
             <appender-ref ref="DEBUGAPPENDER" />
              <appender-ref ref="INFOAPPENDER" />
               <appender-ref ref="ERRORAPPENDER" />

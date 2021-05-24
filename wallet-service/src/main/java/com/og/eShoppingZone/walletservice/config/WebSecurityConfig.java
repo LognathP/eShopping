@@ -1,8 +1,7 @@
-package com.og.eShoppingZone.productservice.config;
+package com.og.eShoppingZone.walletservice.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -10,8 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.og.eShoppingZone.productservice.auth.JwtAuthFilter;
-import com.og.eShoppingZone.productservice.auth.JwtAuthenticationEntryPoint;
+import com.og.eShoppingZone.walletservice.auth.JwtAuthFilter;
+import com.og.eShoppingZone.walletservice.auth.JwtAuthenticationEntryPoint;
 
 
 
@@ -33,9 +32,8 @@ protected void configure(HttpSecurity httpSecurity) throws Exception {
 // We don't need CSRF for this example
 httpSecurity.csrf().disable()
 // dont authenticate this particular request
-.authorizeRequests().antMatchers("/api/v1/products/").hasAnyRole("MERCHANT").
-antMatchers(HttpMethod.GET).hasAnyRole("CUSTOMER").
-antMatchers(HttpMethod.GET).permitAll().
+.authorizeRequests().antMatchers("/api/v1/wallet").hasAnyRole("CUSTOMER").
+antMatchers("/swagger-ui.html").permitAll().
 // all other requests need to be authenticated
 anyRequest().authenticated().and().
 // make sure we use stateless session; session won't be used to
